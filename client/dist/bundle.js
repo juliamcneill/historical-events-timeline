@@ -11796,7 +11796,7 @@ var App = function (_React$Component) {
       if (this.state.searchTerm != term) {
         this.setState({
           events: [],
-          page: 0
+          page: 1
         });
       }
 
