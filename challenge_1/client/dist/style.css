@@ -1,0 +1,32 @@
+body {
+  padding: 20px 60px;
+  font-family: "PT Serif", sans-serif;
+  margin: 0px;
+  color: #2c3e50;
+  background-color: #f4f7f8;
+  font-size: 1.1em;
+}
+
+.container {
+  display: flex;
+  overflow-x: auto;
+  flex-direction: row;
+  width: 1000px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fdfdfd;
+  height: 200px;
+  min-width: 200px;
+  padding: 30px;
+  margin: 20px;
+}
+
+.item:active {
+  border-width: 5px;
+}

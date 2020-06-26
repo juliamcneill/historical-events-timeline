@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + "/../client/dist"));
 
 module.exports.app = app;
-app.set("port", 3000);
+app.set("port", 3030);
 
 if (!module.parent) {
   app.listen(app.get("port"));
