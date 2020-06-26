@@ -15,6 +15,7 @@ class App extends React.Component {
       isLoading: false,
       events: [],
       page: 1,
+      editMode: false,
     };
 
     window.onload = () => {
@@ -58,6 +59,7 @@ class App extends React.Component {
     };
 
     this.getEvents = this.getEvents.bind(this);
+    this.toggleEditMode = this.toggleEditMode.bind(this);
   }
 
   componentWillMount() {
@@ -93,7 +95,6 @@ class App extends React.Component {
   }
 
   dateParser(data) {
-    console.log(data);
     for (var event of data) {
       if (event.date.indexOf("/") !== -1) {
         event.date = event.date.split("/")[0];
@@ -102,12 +103,28 @@ class App extends React.Component {
     return data;
   }
 
+  toggleEditMode(event) {
+    event.preventDefault();
+    if (this.state.editMode === false) {
+      this.setState({
+        editMode: true,
+      });
+    } else {
+      this.setState({
+        editMode: false,
+      });
+    }
+  }
+
   render() {
     return (
       <div>
         <h1>Historical Events Finder</h1>
         <Search getEvents={this.getEvents} />
-        <Timeline events={this.state.events} />
+        <button type="submit" onClick={this.toggleEditMode}>
+          Toggle Edit Mode
+        </button>
+        <Timeline events={this.state.events} editMode={this.state.editMode} />
       </div>
     );
   }
