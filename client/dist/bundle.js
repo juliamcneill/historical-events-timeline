@@ -10427,6 +10427,9 @@ var Timeline = function (_React$Component) {
   }
 
   _createClass(Timeline, [{
+    key: "dateParser",
+    value: function dateParser() {}
+  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
@@ -11832,7 +11835,7 @@ var App = function (_React$Component) {
 
           _this2.setState({
             isLoading: false,
-            events: [].concat(_toConsumableArray(_this2.state.events), _toConsumableArray(data))
+            events: [].concat(_toConsumableArray(_this2.state.events), _toConsumableArray(_this2.dateParser(data)))
           });
         }).catch(function (error) {
           console.log(error);
@@ -11841,6 +11844,39 @@ var App = function (_React$Component) {
           });
         });
       });
+    }
+  }, {
+    key: "dateParser",
+    value: function dateParser(data) {
+      console.log(data);
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var event = _step.value;
+
+          if (event.date.indexOf("/") !== -1) {
+            event.date = event.date.split("/")[0];
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return data;
     }
   }, {
     key: "render",

@@ -7,6 +7,8 @@ class Timeline extends React.Component {
     this.state = {};
   }
 
+  dateParser() {}
+
   render() {
     return (
       <div>

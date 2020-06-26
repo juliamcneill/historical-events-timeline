@@ -80,7 +80,7 @@ class App extends React.Component {
         .then(({ data }) => {
           this.setState({
             isLoading: false,
-            events: [...this.state.events, ...data],
+            events: [...this.state.events, ...this.dateParser(data)],
           });
         })
         .catch((error) => {
@@ -90,6 +90,16 @@ class App extends React.Component {
           });
         });
     });
+  }
+
+  dateParser(data) {
+    console.log(data);
+    for (var event of data) {
+      if (event.date.indexOf("/") !== -1) {
+        event.date = event.date.split("/")[0];
+      }
+    }
+    return data;
   }
 
   render() {
