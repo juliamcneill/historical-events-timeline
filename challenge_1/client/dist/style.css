@@ -17,6 +17,10 @@ body {
 }
 
 .item {
+  position: relative;
+  border: 1px solid #77777769;
+  border-radius: 8px;
+  box-shadow: 2px 2px #80808066;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,6 +29,32 @@ body {
   min-width: 200px;
   padding: 30px;
   margin: 20px;
+}
+
+.item:after,
+.item:before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.item:after {
+  border-color: rgba(253, 253, 253, 0);
+  border-bottom-color: #fdfdfd;
+  border-width: 30px;
+  margin-left: -30px;
+}
+
+.item:before {
+  border-color: rgba(119, 119, 119, 0);
+  border-bottom-color: #77777769;
+  border-width: 32px;
+  margin-left: -32px;
 }
 
 .item:active {
