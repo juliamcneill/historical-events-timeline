@@ -103,6 +103,17 @@ body {
 
 .progress-bar {
   height: 8px;
-  background: darkslategrey;
+  background-color: darkslategrey;
   width: 0%;
+}
+
+.item-date {
+  position: absolute;
+  left: 220px;
+  top: -20px;
+  z-index: 2;
+  color: white;
+  background-color: darkslategrey;
+  border-radius: 15px;
+  padding: 13px;
 }

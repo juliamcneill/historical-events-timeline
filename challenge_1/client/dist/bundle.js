@@ -10292,13 +10292,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(51);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(91);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10321,64 +10323,9 @@ var Timeline = function (_React$Component) {
   }
 
   _createClass(Timeline, [{
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps, prevState, snapshot) {
-      console.log("componentDidUpdate", prevState.scrollLeftPosition);
-      var scrollContainer = ReactDOM.findDOMNode(this.scrollRef);
-      if (scrollContainer) {
-        scrollContainer.scrollLeft += this.state.scrollLeftPosition;
-      }
-    }
-  }, {
-    key: "centerActiveItem",
-    value: function centerActiveItem() {
-      var scrollContainer = ReactDOM.findDOMNode(this.scrollRef);
-      var activeItem = ReactDOM.findDOMNode(this.activeRef);
-
-      if (!activeItem) {
-        return;
-      }
-
-      var scrollRect = scrollContainer.getBoundingClientRect();
-      var activeRect = activeItem.getBoundingClientRect();
-      var activeWidth = activeRect.width;
-      var activeLeft = activeRect.left;
-      var activeRight = activeRect.right;
-      var scrollWidth = scrollContainer.scrollWidth;
-      var scrollLeft = scrollRect.left;
-
-      this.setState(function (state) {
-        return _extends({}, state, {
-          scrollLeftPosition: activeRect.left - scrollRect.left - scrollRect.width / 2 + activeRect.width / 2
-        });
-      });
-    }
-  }, {
-    key: "toggleItem",
-    value: function toggleItem(currentItem) {
-      var _this2 = this;
-
-      this.setState(function (state) {
-        return _extends({}, state, {
-          items: state.items.map(function (item) {
-            item.active = currentItem.id === item.id ? item.active = !item.active : false;
-
-            return _extends({}, item);
-          })
-        });
-      }, function () {
-        _this2.centerActiveItem();
-      });
-    }
-  }, {
-    key: "clickHandler",
-    value: function clickHandler(event, currentItem) {
-      this.toggleItem(currentItem);
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _react2.default.createElement(
         "div",
@@ -10394,30 +10341,22 @@ var Timeline = function (_React$Component) {
         ),
         _react2.default.createElement(
           "div",
-          { className: "container", ref: function ref(_ref2) {
-              return _this3.scrollRef = _ref2;
+          { className: "container", ref: function ref(_ref) {
+              return _this2.scrollRef = _ref;
             } },
           this.props.events.map(function (item, i) {
             return _react2.default.createElement(
               "div",
-              {
-                ref: function ref(_ref) {
-                  if (item.active) {
-                    _this3.activeRef = _ref;
-                  }
-                },
-                className: "item " + (item.active ? "active" : ""),
-                key: i,
-                onClick: function onClick(e) {
-                  return _this3.clickHandler(e, item);
-                }
-              },
+              { className: "item" },
               _react2.default.createElement(
                 "span",
-                null,
-                item.description,
-                " Date: ",
+                { className: "item-date" },
                 item.date
+              ),
+              _react2.default.createElement(
+                "span",
+                { className: "item-description" },
+                item.description
               )
             );
           })
