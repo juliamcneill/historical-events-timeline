@@ -1,7 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
-import request from "superagent";
 import debounce from "lodash.debounce";
 
 import Search from "./components/Search.jsx";
@@ -16,6 +15,7 @@ class App extends React.Component {
       hasMore: true,
       isLoading: false,
       events: [],
+      page: 1,
     };
 
     window.onload = () => {
@@ -51,6 +51,9 @@ class App extends React.Component {
           winScroll.scrollLeft ===
           winScroll.scrollWidth - winScroll.clientWidth
         ) {
+          this.setState((prevState) => {
+            return { page: prevState.page + 1 };
+          });
           getEvents(this.state.searchTerm);
         }
       }, 50);
@@ -67,12 +70,15 @@ class App extends React.Component {
     if (this.state.searchTerm != term) {
       this.setState({
         events: [],
+        page: 0,
       });
     }
 
     this.setState({ searchTerm: term, isLoading: true }, () => {
       axios
-        .get(`http://localhost:3000/events?q=${term}&_page=1&_limit=10`)
+        .get(
+          `http://localhost:3000/events?q=${term}&_page=${this.state.page}&_limit=10`
+        )
         .then(({ data }) => {
           this.setState({
             hasMore: this.state.events.length < 10000,
@@ -91,7 +97,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { error, hasMore, isLoading, events } = this.state;
+    const { error, hasMore, events } = this.state;
 
     return (
       <div>
@@ -104,7 +110,7 @@ class App extends React.Component {
             </div>
           </div>
           <div className="container" ref={(ref) => (this.scrollRef = ref)}>
-            {this.state.events.map((item, i) => (
+            {events.map((item) => (
               <div className="item">
                 <span className="item-date">{item.date}</span>
                 <span className="item-description">{item.description}</span>
@@ -112,8 +118,7 @@ class App extends React.Component {
             ))}
           </div>
           {error && <div style={{ color: "#900" }}>{error}</div>}
-          {isLoading && <div>Loading...</div>}
-          {!hasMore && <div>You did it! You reached the end!</div>}
+          {!hasMore && <div>Present-Day</div>}
         </div>
       </div>
     );
