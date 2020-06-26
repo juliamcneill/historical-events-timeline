@@ -10417,10 +10417,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Timeline = function (_React$Component) {
   _inherits(Timeline, _React$Component);
 
-  function Timeline() {
+  function Timeline(props) {
     _classCallCheck(this, Timeline);
 
-    var _this = _possibleConstructorReturn(this, (Timeline.__proto__ || Object.getPrototypeOf(Timeline)).call(this));
+    var _this = _possibleConstructorReturn(this, (Timeline.__proto__ || Object.getPrototypeOf(Timeline)).call(this, props));
 
     _this.state = {};
     return _this;
@@ -10429,7 +10429,39 @@ var Timeline = function (_React$Component) {
   _createClass(Timeline, [{
     key: "render",
     value: function render() {
-      return _react2.default.createElement("div", null);
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(
+          "div",
+          { id: "progress-container" },
+          _react2.default.createElement(
+            "div",
+            { id: "progress-unfilled" },
+            _react2.default.createElement("div", { id: "progress-filled" })
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          { id: "events-feed" },
+          this.props.events.map(function (item) {
+            return _react2.default.createElement(
+              "div",
+              { className: "item" },
+              _react2.default.createElement(
+                "span",
+                { className: "item-date" },
+                item.date
+              ),
+              _react2.default.createElement(
+                "span",
+                { className: "item-description" },
+                item.description
+              )
+            );
+          })
+        )
+      );
     }
   }]);
 
@@ -11770,7 +11802,7 @@ var App = function (_React$Component) {
           });
           getEvents(_this.state.searchTerm);
         }
-      }, 50);
+      }, 100);
     };
 
     _this.getEvents = _this.getEvents.bind(_this);
@@ -11813,8 +11845,6 @@ var App = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
-
       return _react2.default.createElement(
         "div",
         null,
@@ -11824,41 +11854,7 @@ var App = function (_React$Component) {
           "Historical Events Finder"
         ),
         _react2.default.createElement(_Search2.default, { getEvents: this.getEvents }),
-        _react2.default.createElement(
-          "div",
-          null,
-          _react2.default.createElement(
-            "div",
-            { id: "progress-container" },
-            _react2.default.createElement(
-              "div",
-              { id: "progress-unfilled" },
-              _react2.default.createElement("div", { id: "progress-filled" })
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "events-feed", ref: function ref(_ref2) {
-                return _this3.scrollRef = _ref2;
-              } },
-            this.state.events.map(function (item) {
-              return _react2.default.createElement(
-                "div",
-                { className: "item" },
-                _react2.default.createElement(
-                  "span",
-                  { className: "item-date" },
-                  item.date
-                ),
-                _react2.default.createElement(
-                  "span",
-                  { className: "item-description" },
-                  item.description
-                )
-              );
-            })
-          )
-        )
+        _react2.default.createElement(_Timeline2.default, { events: this.state.events })
       );
     }
   }]);

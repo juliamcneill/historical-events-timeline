@@ -54,7 +54,7 @@ class App extends React.Component {
           });
           getEvents(this.state.searchTerm);
         }
-      }, 50);
+      }, 100);
     };
 
     this.getEvents = this.getEvents.bind(this);
@@ -97,21 +97,7 @@ class App extends React.Component {
       <div>
         <h1>Historical Events Finder</h1>
         <Search getEvents={this.getEvents} />
-        <div>
-          <div id="progress-container">
-            <div id="progress-unfilled">
-              <div id="progress-filled"></div>
-            </div>
-          </div>
-          <div id="events-feed" ref={(ref) => (this.scrollRef = ref)}>
-            {this.state.events.map((item) => (
-              <div className="item">
-                <span className="item-date">{item.date}</span>
-                <span className="item-description">{item.description}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Timeline events={this.state.events} />
       </div>
     );
   }
