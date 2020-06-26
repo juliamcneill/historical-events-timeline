@@ -12,14 +12,13 @@ class App extends React.Component {
 
     this.state = {
       searchTerm: "",
-      hasMore: true,
       isLoading: false,
       events: [],
       page: 1,
     };
 
     window.onload = () => {
-      var winScroll = document.querySelector(".container");
+      var winScroll = document.querySelector("#events-feed");
 
       winScroll.onscroll = function () {
         updateProgressBar();
@@ -30,22 +29,21 @@ class App extends React.Component {
         var width = winScroll.scrollWidth - winScroll.clientWidth;
         var scrolled = (winScroll.scrollLeft / width) * 100;
         if (scrolled >= 100) {
-          return (document.getElementById("myBar").style.width = "100%");
+          return (document.getElementById("progress-filled").style.width =
+            "100%");
         }
-        document.getElementById("myBar").style.width = scrolled + "%";
+        document.getElementById("progress-filled").style.width = scrolled + "%";
       }
 
       var loadMoreEvents = debounce(() => {
         const {
           getEvents,
-          state: { error, isLoading, hasMore },
+          state: { isLoading },
         } = this;
 
-        if (error || isLoading || !hasMore) {
+        if (isLoading) {
           return;
         }
-
-        var winScroll = document.querySelector(".container");
 
         if (
           winScroll.scrollLeft ===
@@ -77,11 +75,10 @@ class App extends React.Component {
     this.setState({ searchTerm: term, isLoading: true }, () => {
       axios
         .get(
-          `http://localhost:3000/events?q=${term}&_page=${this.state.page}&_limit=10`
+          `http://localhost:3000/events?q=${this.state.searchTerm}&_page=${this.state.page}&_limit=10`
         )
         .then(({ data }) => {
           this.setState({
-            hasMore: this.state.events.length < 10000,
             isLoading: false,
             events: [...this.state.events, ...data],
           });
@@ -89,7 +86,6 @@ class App extends React.Component {
         .catch((error) => {
           console.log(error);
           this.setState({
-            error: error.message,
             isLoading: false,
           });
         });
@@ -97,28 +93,24 @@ class App extends React.Component {
   }
 
   render() {
-    const { error, hasMore, events } = this.state;
-
     return (
       <div>
         <h1>Historical Events Finder</h1>
         <Search getEvents={this.getEvents} />
         <div>
-          <div className="header">
-            <div className="progress-container">
-              <div className="progress-bar" id="myBar"></div>
+          <div id="progress-container">
+            <div id="progress-unfilled">
+              <div id="progress-filled"></div>
             </div>
           </div>
-          <div className="container" ref={(ref) => (this.scrollRef = ref)}>
-            {events.map((item) => (
+          <div id="events-feed" ref={(ref) => (this.scrollRef = ref)}>
+            {this.state.events.map((item) => (
               <div className="item">
                 <span className="item-date">{item.date}</span>
                 <span className="item-description">{item.description}</span>
               </div>
             ))}
           </div>
-          {error && <div style={{ color: "#900" }}>{error}</div>}
-          {!hasMore && <div>Present-Day</div>}
         </div>
       </div>
     );

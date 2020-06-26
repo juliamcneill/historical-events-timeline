@@ -11733,14 +11733,13 @@ var App = function (_React$Component) {
 
     _this.state = {
       searchTerm: "",
-      hasMore: true,
       isLoading: false,
       events: [],
       page: 1
     };
 
     window.onload = function () {
-      var winScroll = document.querySelector(".container");
+      var winScroll = document.querySelector("#events-feed");
 
       winScroll.onscroll = function () {
         updateProgressBar();
@@ -11751,24 +11750,19 @@ var App = function (_React$Component) {
         var width = winScroll.scrollWidth - winScroll.clientWidth;
         var scrolled = winScroll.scrollLeft / width * 100;
         if (scrolled >= 100) {
-          return document.getElementById("myBar").style.width = "100%";
+          return document.getElementById("progress-filled").style.width = "100%";
         }
-        document.getElementById("myBar").style.width = scrolled + "%";
+        document.getElementById("progress-filled").style.width = scrolled + "%";
       }
 
       var loadMoreEvents = (0, _lodash2.default)(function () {
         var getEvents = _this.getEvents,
-            _this$state = _this.state,
-            error = _this$state.error,
-            isLoading = _this$state.isLoading,
-            hasMore = _this$state.hasMore;
+            isLoading = _this.state.isLoading;
 
 
-        if (error || isLoading || !hasMore) {
+        if (isLoading) {
           return;
         }
-
-        var winScroll = document.querySelector(".container");
 
         if (winScroll.scrollLeft === winScroll.scrollWidth - winScroll.clientWidth) {
           _this.setState(function (prevState) {
@@ -11801,18 +11795,16 @@ var App = function (_React$Component) {
       }
 
       this.setState({ searchTerm: term, isLoading: true }, function () {
-        _axios2.default.get("http://localhost:3000/events?q=" + term + "&_page=" + _this2.state.page + "&_limit=10").then(function (_ref) {
+        _axios2.default.get("http://localhost:3000/events?q=" + _this2.state.searchTerm + "&_page=" + _this2.state.page + "&_limit=10").then(function (_ref) {
           var data = _ref.data;
 
           _this2.setState({
-            hasMore: _this2.state.events.length < 10000,
             isLoading: false,
             events: [].concat(_toConsumableArray(_this2.state.events), _toConsumableArray(data))
           });
         }).catch(function (error) {
           console.log(error);
           _this2.setState({
-            error: error.message,
             isLoading: false
           });
         });
@@ -11822,12 +11814,6 @@ var App = function (_React$Component) {
     key: "render",
     value: function render() {
       var _this3 = this;
-
-      var _state = this.state,
-          error = _state.error,
-          hasMore = _state.hasMore,
-          events = _state.events;
-
 
       return _react2.default.createElement(
         "div",
@@ -11843,19 +11829,19 @@ var App = function (_React$Component) {
           null,
           _react2.default.createElement(
             "div",
-            { className: "header" },
+            { id: "progress-container" },
             _react2.default.createElement(
               "div",
-              { className: "progress-container" },
-              _react2.default.createElement("div", { className: "progress-bar", id: "myBar" })
+              { id: "progress-unfilled" },
+              _react2.default.createElement("div", { id: "progress-filled" })
             )
           ),
           _react2.default.createElement(
             "div",
-            { className: "container", ref: function ref(_ref2) {
+            { id: "events-feed", ref: function ref(_ref2) {
                 return _this3.scrollRef = _ref2;
               } },
-            events.map(function (item) {
+            this.state.events.map(function (item) {
               return _react2.default.createElement(
                 "div",
                 { className: "item" },
@@ -11871,16 +11857,6 @@ var App = function (_React$Component) {
                 )
               );
             })
-          ),
-          error && _react2.default.createElement(
-            "div",
-            { style: { color: "#900" } },
-            error
-          ),
-          !hasMore && _react2.default.createElement(
-            "div",
-            null,
-            "Present-Day"
           )
         )
       );

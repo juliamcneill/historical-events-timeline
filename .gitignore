@@ -1,2 +1,3 @@
-public/app.js
+client/dist/bundle.js
 node_modules
+

@@ -11,41 +11,69 @@ h1 {
   float: left;
 }
 
-.container {
+input[type="text"] {
+  font-size: 0.9em;
+  height: 30px;
+  border: 1px solid lightgrey;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin: 25px 30px;
+  float: left;
+  width: 20%;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 1.1px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: darkslategrey;
+  width: 100px;
+  float: left;
+  padding: 10px;
+  margin: 30px 0px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease 0s;
+}
+
+button:hover {
+  background-color: #80808066;
+}
+
+#progress-container {
+  clear: both;
+  padding-top: 20px;
+}
+
+#events-feed {
   position: relative;
   display: flex;
   overflow-x: auto;
   flex-direction: row;
   width: 100%;
   margin: 0 auto;
-}
-
-.container {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.container::-webkit-scrollbar {
+#events-feed::-webkit-scrollbar {
   display: none;
 }
 
-.header {
-  clear: both;
-  padding-top: 20px;
+#progress-unfilled {
+  width: 100%;
+  height: 8px;
+  background: #ccc;
 }
 
-/* .container::after {
-  content: "";
-  position: absolute;
-  height: 6px;
-  background-color: white;
-  left: 0;
-  right: 0;
-  bottom: 50%;
-  margin-bottom: 220px;
-  width: 100%;
-  overflow-x: scroll;
-} */
+#progress-filled {
+  height: 8px;
+  background-color: darkslategrey;
+  width: 0%;
+}
 
 .item {
   position: relative;
@@ -93,34 +121,6 @@ h1 {
   margin-left: -32px;
 }
 
-/* .item span:after {
-  content: "";
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: #77777769;
-  top: -100px;
-  left: 120px;
-  border-radius: 50%;
-  z-index: 1;
-} */
-
-.item:active {
-  border-width: 5px;
-}
-
-.progress-container {
-  width: 100%;
-  height: 8px;
-  background: #ccc;
-}
-
-.progress-bar {
-  height: 8px;
-  background-color: darkslategrey;
-  width: 0%;
-}
-
 .item-date {
   position: absolute;
   left: 230px;
@@ -130,36 +130,4 @@ h1 {
   background-color: darkslategrey;
   border-radius: 15px;
   padding: 13px;
-}
-
-input[type="text"] {
-  font-size: 0.9em;
-  height: 30px;
-  border: 1px solid lightgrey;
-  padding: 8px 16px;
-  border-radius: 4px;
-  margin: 25px 30px;
-  float: left;
-  width: 20%;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 3px;
-  padding: 10px;
-  width: 100px;
-  margin: 30px 0px;
-  font-family: "Roboto", sans-serif;
-  letter-spacing: 1.1px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-  background-color: darkslategrey;
-  transition: all 0.2s ease 0s;
-  float: left;
-}
-
-button:hover {
-  background-color: #80808066;
 }
