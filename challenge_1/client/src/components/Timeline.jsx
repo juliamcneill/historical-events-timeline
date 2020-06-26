@@ -70,6 +70,11 @@ class Timeline extends React.Component {
   render() {
     return (
       <div>
+        <div className="header">
+          <div className="progress-container">
+            <div className="progress-bar" id="myBar"></div>
+          </div>
+        </div>
         <div className="container" ref={(ref) => (this.scrollRef = ref)}>
           {this.props.events.map((item, i) => (
             <div
@@ -82,7 +87,9 @@ class Timeline extends React.Component {
               key={i}
               onClick={(e) => this.clickHandler(e, item)}
             >
-              {item.description}#{item.date}
+              <span>
+                {item.description} Date: {item.date}
+              </span>
             </div>
           ))}
         </div>

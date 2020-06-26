@@ -10385,6 +10385,15 @@ var Timeline = function (_React$Component) {
         null,
         _react2.default.createElement(
           "div",
+          { className: "header" },
+          _react2.default.createElement(
+            "div",
+            { className: "progress-container" },
+            _react2.default.createElement("div", { className: "progress-bar", id: "myBar" })
+          )
+        ),
+        _react2.default.createElement(
+          "div",
           { className: "container", ref: function ref(_ref2) {
               return _this3.scrollRef = _ref2;
             } },
@@ -10403,9 +10412,13 @@ var Timeline = function (_React$Component) {
                   return _this3.clickHandler(e, item);
                 }
               },
-              item.description,
-              "#",
-              item.date
+              _react2.default.createElement(
+                "span",
+                null,
+                item.description,
+                " Date: ",
+                item.date
+              )
             );
           })
         )
