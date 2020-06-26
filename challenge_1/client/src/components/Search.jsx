@@ -30,7 +30,7 @@ class Search extends React.Component {
     return (
       <form>
         <input
-          type="search"
+          type="text"
           placeholder="Search"
           name="search"
           value={this.state.search}

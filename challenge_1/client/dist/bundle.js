@@ -11300,7 +11300,7 @@ var App = function (_React$Component) {
     value: function getEvents(term) {
       var _this2 = this;
 
-      _axios2.default.get("http://localhost:3000/events?q=" + term + "&_page=1&_limit=10").then(function (_ref) {
+      _axios2.default.get("http://localhost:3000/events?q=" + term + "&_page=1&_limit=50").then(function (_ref) {
         var data = _ref.data;
 
         _this2.setState({
@@ -24257,7 +24257,7 @@ var Search = function (_React$Component) {
         "form",
         null,
         _react2.default.createElement("input", {
-          type: "search",
+          type: "text",
           placeholder: "Search",
           name: "search",
           value: this.state.search,

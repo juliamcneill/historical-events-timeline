@@ -21,7 +21,7 @@ class App extends React.Component {
 
   getEvents(term) {
     axios
-      .get(`http://localhost:3000/events?q=${term}&_page=1&_limit=10`)
+      .get(`http://localhost:3000/events?q=${term}&_page=1&_limit=50`)
       .then(({ data }) => {
         this.setState({
           events: data,
