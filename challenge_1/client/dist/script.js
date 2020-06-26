@@ -5,10 +5,9 @@ winScroll.onscroll = function () {
 };
 
 function myFunction() {
-  var width = winScroll.clientWidth - winScroll.scrollLeft;
+  var width = winScroll.scrollWidth - winScroll.clientWidth;
 
-  var scrolled =
-    ((winScroll.clientWidth - width) * 100) / winScroll.clientWidth;
+  var scrolled = (winScroll.scrollLeft / width) * 100;
 
   if (scrolled >= 100) {
     return (document.getElementById("myBar").style.width = "100%");
