@@ -32,20 +32,34 @@ connection.connect((error) => {
   }
 });
 
-var readBySearchTermAndLimit = (searchTerm, callback) => {
-  var sql =
-    `SELECT * FROM events WHERE description LIKE '%` + `${searchTerm}` + `%'`;
-  connection.query(sql, searchTerm, function (error, results) {
-    callback(error, results);
-  });
+var readBySearchTermAndLimit = (searchTerm, limitStart, limitEnd, callback) => {
+  connection.query(
+    `SELECT * FROM events WHERE date LIKE '%` +
+      `${searchTerm}` +
+      `%' OR description LIKE '%` +
+      `${searchTerm}` +
+      `%' OR category1 LIKE '%` +
+      `${searchTerm}` +
+      `%' OR category2 LIKE '%` +
+      `${searchTerm}` +
+      `%' LIMIT ${limitStart}, ${limitEnd}`,
+    function (error, results) {
+      callback(error, results);
+    }
+  );
 };
 
 app.get("/events", (req, res) => {
-  readBySearchTermAndLimit(req.query.searchTerm, function (error, results) {
-    if (error) {
-      res.status(404).json(error);
-    } else {
-      res.status(200).json(results);
+  readBySearchTermAndLimit(
+    req.query.searchTerm,
+    req.query.limitStart,
+    req.query.limitEnd,
+    function (error, results) {
+      if (error) {
+        res.status(404).json(error);
+      } else {
+        res.status(200).json(results);
+      }
     }
-  });
+  );
 });
