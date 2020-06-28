@@ -6,10 +6,12 @@ class Search extends React.Component {
     super(props);
     this.state = {
       search: "",
+      lastSearched: null,
     };
 
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleClearSearch = this.handleClearSearch.bind(this);
   }
 
   handleFormChange(event) {
@@ -22,7 +24,16 @@ class Search extends React.Component {
     event.preventDefault();
     this.props.getEvents(this.state.search);
     this.setState({
+      lastSearched: this.state.search,
+    });
+  }
+
+  handleClearSearch(event) {
+    event.preventDefault();
+    this.props.getEvents("");
+    this.setState({
       search: "",
+      lastSearched: null,
     });
   }
 
@@ -39,6 +50,19 @@ class Search extends React.Component {
         <button type="submit" onClick={(event) => this.handleFormSubmit(event)}>
           Search
         </button>
+        <span id="searchDescription">
+          {this.state.search !== "" && this.state.lastSearched !== null ? (
+            <span>
+              <span>Showing results for: "{this.state.lastSearched}" </span>
+              <span
+                id="clearSearch"
+                onClick={(event) => this.handleClearSearch(event)}
+              >
+                x
+              </span>
+            </span>
+          ) : null}
+        </span>
       </form>
     );
   }

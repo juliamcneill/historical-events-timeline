@@ -10331,11 +10331,13 @@ var Search = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this, props));
 
     _this.state = {
-      search: ""
+      search: "",
+      lastSearched: null
     };
 
     _this.handleFormChange = _this.handleFormChange.bind(_this);
     _this.handleFormSubmit = _this.handleFormSubmit.bind(_this);
+    _this.handleClearSearch = _this.handleClearSearch.bind(_this);
     return _this;
   }
 
@@ -10350,7 +10352,17 @@ var Search = function (_React$Component) {
       event.preventDefault();
       this.props.getEvents(this.state.search);
       this.setState({
-        search: ""
+        lastSearched: this.state.search
+      });
+    }
+  }, {
+    key: "handleClearSearch",
+    value: function handleClearSearch(event) {
+      event.preventDefault();
+      this.props.getEvents("");
+      this.setState({
+        search: "",
+        lastSearched: null
       });
     }
   }, {
@@ -10376,6 +10388,31 @@ var Search = function (_React$Component) {
               return _this2.handleFormSubmit(event);
             } },
           "Search"
+        ),
+        _react2.default.createElement(
+          "span",
+          { id: "searchDescription" },
+          this.state.search !== "" && this.state.lastSearched !== null ? _react2.default.createElement(
+            "span",
+            null,
+            _react2.default.createElement(
+              "span",
+              null,
+              "Showing results for: \"",
+              this.state.lastSearched,
+              "\" "
+            ),
+            _react2.default.createElement(
+              "span",
+              {
+                id: "clearSearch",
+                onClick: function onClick(event) {
+                  return _this2.handleClearSearch(event);
+                }
+              },
+              "x"
+            )
+          ) : null
         )
       );
     }
