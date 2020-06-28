@@ -82,7 +82,7 @@ class App extends React.Component {
     this.setState({ searchTerm: term, isLoading: true }, () => {
       axios
         .get(
-          `http://localhost:3030/events?searchTerm=${this.state.searchTerm}&limitStart=${this.state.limitStart}&limitEnd=${this.state.limitEnd}`
+          `/events?searchTerm=${this.state.searchTerm}&limitStart=${this.state.limitStart}&limitEnd=${this.state.limitEnd}`
         )
         .then(({ data }) => {
           this.setState({

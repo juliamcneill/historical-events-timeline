@@ -11770,9 +11770,8 @@ var EditForm = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (EditForm.__proto__ || Object.getPrototypeOf(EditForm)).call(this, props));
 
     _this.state = {
-      currentlyEditing: "",
-      newBudgetName: "",
-      newBudgetAmount: ""
+      newDate: props.selectedEvent.date,
+      newDescription: props.selectedEvent.description
     };
 
     _this.handleEditChange = _this.handleEditChange.bind(_this);
@@ -11781,26 +11780,27 @@ var EditForm = function (_React$Component) {
   }
 
   _createClass(EditForm, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (prevProps.selectedEvent.date !== this.props.selectedEvent.date || prevProps.selectedEvent.description !== this.props.selectedEvent.description) {
+        this.setState({
+          newDate: this.props.selectedEvent.date,
+          newDescription: this.props.selectedEvent.description
+        });
+      }
+    }
+  }, {
     key: "handleEditChange",
-    value: function handleEditChange(currentlyEditing, event) {
-      this.setState(_defineProperty({
-        currentlyEditing: currentlyEditing
-      }, event.target.name, event.target.value));
+    value: function handleEditChange(event) {
+      this.setState(_defineProperty({}, event.target.name, event.target.value));
     }
   }, {
     key: "handleEditSubmit",
     value: function handleEditSubmit(event) {
       event.preventDefault();
-      this.props.editBudget({
-        username: this.props.currentUser,
-        oldBudgetName: this.state.currentlyEditing,
-        newBudgetName: this.state.newBudgetName,
-        newBudgetAmount: this.state.newBudgetAmount
-      });
       this.setState({
-        currentEditing: "",
-        newBudgetName: "",
-        newBudgetAmount: ""
+        newDate: "",
+        newDescription: ""
       });
     }
   }, {
@@ -11815,38 +11815,26 @@ var EditForm = function (_React$Component) {
           "div",
           null,
           "Select an event: ",
-          this.props.selectedEvent.description
+          this.props.selectedEvent.id
         ),
         _react2.default.createElement("input", {
-          className: "create-budget-input",
           type: "text",
-          placeholder: budget.name,
-          name: "newBudgetName",
-          value: this.state.newBudgetName,
+          name: "newDate",
+          value: this.state.newDate || "",
           onChange: function onChange(event) {
-            return _this2.handleEditChange(budget.name, event);
+            return _this2.handleEditChange(event);
           }
         }),
         _react2.default.createElement("input", {
-          className: "create-budget-input",
           type: "text",
-          placeholder: budget.amount,
-          name: "newBudgetAmount",
-          value: this.state.newBudgetAmount,
-          onChange: function onChange(event) {
-            return _this2.handleEditChange(budget.name, event);
-          }
+          name: "newDescription",
+          value: this.state.newDescription || "",
+          onChange: this.handleEditChange
         }),
         _react2.default.createElement(
           "button",
-          {
-            className: "edit-budget-button",
-            type: "submit",
-            onClick: function onClick(event) {
-              return _this2.handleEditSubmit(event);
-            }
-          },
-          "Edit Budget"
+          { type: "submit", onClick: this.handleEditSubmit },
+          "Edit Event"
         )
       );
     }
@@ -11979,7 +11967,7 @@ var App = function (_React$Component) {
       }
 
       this.setState({ searchTerm: term, isLoading: true }, function () {
-        _axios2.default.get("http://localhost:3030/events?searchTerm=" + _this2.state.searchTerm + "&limitStart=" + _this2.state.limitStart + "&limitEnd=" + _this2.state.limitEnd).then(function (_ref) {
+        _axios2.default.get("/events?searchTerm=" + _this2.state.searchTerm + "&limitStart=" + _this2.state.limitStart + "&limitEnd=" + _this2.state.limitEnd).then(function (_ref) {
           var data = _ref.data;
 
           _this2.setState({

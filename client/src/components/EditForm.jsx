@@ -5,63 +5,59 @@ class EditForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentlyEditing: "",
-      newBudgetName: "",
-      newBudgetAmount: "",
+      newDate: props.selectedEvent.date,
+      newDescription: props.selectedEvent.description,
     };
 
     this.handleEditChange = this.handleEditChange.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
 
-  handleEditChange(currentlyEditing, event) {
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.selectedEvent.date !== this.props.selectedEvent.date ||
+      prevProps.selectedEvent.description !==
+        this.props.selectedEvent.description
+    ) {
+      this.setState({
+        newDate: this.props.selectedEvent.date,
+        newDescription: this.props.selectedEvent.description,
+      });
+    }
+  }
+
+  handleEditChange(event) {
     this.setState({
-      currentlyEditing: currentlyEditing,
       [event.target.name]: event.target.value,
     });
   }
 
   handleEditSubmit(event) {
     event.preventDefault();
-    this.props.editBudget({
-      username: this.props.currentUser,
-      oldBudgetName: this.state.currentlyEditing,
-      newBudgetName: this.state.newBudgetName,
-      newBudgetAmount: this.state.newBudgetAmount,
-    });
     this.setState({
-      currentEditing: "",
-      newBudgetName: "",
-      newBudgetAmount: "",
+      newDate: "",
+      newDescription: "",
     });
   }
 
   render() {
     return (
       <div>
-        <div>Select an event: {this.props.selectedEvent.description}</div>
+        <div>Select an event: {this.props.selectedEvent.id}</div>
         <input
-          className="create-budget-input"
           type="text"
-          placeholder={budget.name}
-          name="newBudgetName"
-          value={this.state.newBudgetName}
-          onChange={(event) => this.handleEditChange(budget.name, event)}
+          name="newDate"
+          value={this.state.newDate || ""}
+          onChange={(event) => this.handleEditChange(event)}
         ></input>
         <input
-          className="create-budget-input"
           type="text"
-          placeholder={budget.amount}
-          name="newBudgetAmount"
-          value={this.state.newBudgetAmount}
-          onChange={(event) => this.handleEditChange(budget.name, event)}
+          name="newDescription"
+          value={this.state.newDescription || ""}
+          onChange={this.handleEditChange}
         ></input>
-        <button
-          className="edit-budget-button"
-          type="submit"
-          onClick={(event) => this.handleEditSubmit(event)}
-        >
-          Edit Budget
+        <button type="submit" onClick={this.handleEditSubmit}>
+          Edit Event
         </button>
       </div>
     );
