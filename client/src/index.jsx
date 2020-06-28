@@ -14,7 +14,8 @@ class App extends React.Component {
       searchTerm: "",
       isLoading: false,
       events: [],
-      page: 1,
+      limitStart: 0,
+      limitEnd: 10,
       editMode: false,
     };
 
@@ -51,7 +52,10 @@ class App extends React.Component {
           winScroll.scrollWidth - winScroll.clientWidth
         ) {
           this.setState((prevState) => {
-            return { page: prevState.page + 1 };
+            return {
+              limitStart: prevState.limitStart + 10,
+              limitEnd: prevState.limitEnd + 10,
+            };
           });
           getEvents(this.state.searchTerm);
         }
@@ -70,14 +74,15 @@ class App extends React.Component {
     if (this.state.searchTerm != term) {
       this.setState({
         events: [],
-        page: 1,
+        limitStart: 0,
+        limitEnd: 10,
       });
     }
 
     this.setState({ searchTerm: term, isLoading: true }, () => {
       axios
         .get(
-          `http://localhost:3000/events?q=${this.state.searchTerm}&_page=${this.state.page}&_limit=10`
+          `http://localhost:3030/events?searchTerm=${this.state.searchTerm}&limitStart=${this.state.limitStart}&limitEnd=${this.state.limitEnd}`
         )
         .then(({ data }) => {
           this.setState({

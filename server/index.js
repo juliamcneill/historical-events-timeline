@@ -42,7 +42,7 @@ var readBySearchTermAndLimit = (searchTerm, limitStart, limitEnd, callback) => {
       `${searchTerm}` +
       `%' OR category2 LIKE '%` +
       `${searchTerm}` +
-      `%' LIMIT ${limitStart}, ${limitEnd}`,
+      `%' ORDER BY id LIMIT ${limitStart}, ${limitEnd}`,
     function (error, results) {
       callback(error, results);
     }
