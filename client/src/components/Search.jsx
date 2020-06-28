@@ -36,7 +36,7 @@ class Search extends React.Component {
           value={this.state.search}
           onChange={(event) => this.handleFormChange(event)}
         ></input>
-        <button type="submit" onClick={this.handleFormSubmit}>
+        <button type="submit" onClick={(event) => this.handleFormSubmit(event)}>
           Search
         </button>
       </form>

@@ -64,14 +64,15 @@ class App extends React.Component {
 
     this.getEvents = this.getEvents.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.editEvent = this.editEvent.bind(this);
   }
 
   componentWillMount() {
     this.getEvents(this.state.searchTerm);
   }
 
-  getEvents(term) {
-    if (this.state.searchTerm != term) {
+  getEvents(term, eventEdited) {
+    if (this.state.searchTerm != term || eventEdited === true) {
       this.setState({
         events: [],
         limitStart: 0,
@@ -121,6 +122,15 @@ class App extends React.Component {
     }
   }
 
+  editEvent(newEventInformation) {
+    axios
+      .put(`/events`, newEventInformation)
+      .then(() => this.getEvents(this.state.searchTerm, true))
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   render() {
     return (
       <div>
@@ -129,7 +139,11 @@ class App extends React.Component {
         <button type="submit" onClick={this.toggleEditMode}>
           Toggle Edit Mode
         </button>
-        <Timeline events={this.state.events} editMode={this.state.editMode} />
+        <Timeline
+          events={this.state.events}
+          editMode={this.state.editMode}
+          editEvent={this.editEvent}
+        />
       </div>
     );
   }

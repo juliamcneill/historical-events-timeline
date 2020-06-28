@@ -10372,7 +10372,9 @@ var Search = function (_React$Component) {
         }),
         _react2.default.createElement(
           "button",
-          { type: "submit", onClick: this.handleFormSubmit },
+          { type: "submit", onClick: function onClick(event) {
+              return _this2.handleFormSubmit(event);
+            } },
           "Search"
         )
       );
@@ -10404,6 +10406,10 @@ var _react2 = _interopRequireDefault(_react);
 var _reactDom = __webpack_require__(25);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _axios = __webpack_require__(90);
+
+var _axios2 = _interopRequireDefault(_axios);
 
 var _EditForm = __webpack_require__(111);
 
@@ -10460,7 +10466,7 @@ var Timeline = function (_React$Component) {
         _react2.default.createElement(
           "div",
           { id: "events-feed" },
-          this.props.events.map(function (item, index) {
+          this.props.events.map(function (item) {
             return _react2.default.createElement(
               "div",
               { className: "item", onClick: function onClick() {
@@ -10479,7 +10485,10 @@ var Timeline = function (_React$Component) {
             );
           })
         ),
-        this.props.editMode ? _react2.default.createElement(_EditForm2.default, { selectedEvent: this.state.selectedEvent }) : null
+        this.props.editMode ? _react2.default.createElement(_EditForm2.default, {
+          selectedEvent: this.state.selectedEvent,
+          editEvent: this.props.editEvent
+        }) : null
       );
     }
   }]);
@@ -11798,9 +11807,10 @@ var EditForm = function (_React$Component) {
     key: "handleEditSubmit",
     value: function handleEditSubmit(event) {
       event.preventDefault();
-      this.setState({
-        newDate: "",
-        newDescription: ""
+      this.props.editEvent({
+        id: this.props.selectedEvent.id,
+        newDate: this.state.newDate,
+        newDescription: this.state.newDescription
       });
     }
   }, {
@@ -11814,8 +11824,7 @@ var EditForm = function (_React$Component) {
         _react2.default.createElement(
           "div",
           null,
-          "Select an event: ",
-          this.props.selectedEvent.id
+          "Select an event:"
         ),
         _react2.default.createElement("input", {
           type: "text",
@@ -11945,6 +11954,7 @@ var App = function (_React$Component) {
 
     _this.getEvents = _this.getEvents.bind(_this);
     _this.toggleEditMode = _this.toggleEditMode.bind(_this);
+    _this.editEvent = _this.editEvent.bind(_this);
     return _this;
   }
 
@@ -11955,10 +11965,10 @@ var App = function (_React$Component) {
     }
   }, {
     key: "getEvents",
-    value: function getEvents(term) {
+    value: function getEvents(term, eventEdited) {
       var _this2 = this;
 
-      if (this.state.searchTerm != term) {
+      if (this.state.searchTerm != term || eventEdited === true) {
         this.setState({
           events: [],
           limitStart: 0,
@@ -12029,6 +12039,17 @@ var App = function (_React$Component) {
       }
     }
   }, {
+    key: "editEvent",
+    value: function editEvent(newEventInformation) {
+      var _this3 = this;
+
+      _axios2.default.put("/events", newEventInformation).then(function () {
+        return _this3.getEvents(_this3.state.searchTerm, true);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
@@ -12045,7 +12066,11 @@ var App = function (_React$Component) {
           { type: "submit", onClick: this.toggleEditMode },
           "Toggle Edit Mode"
         ),
-        _react2.default.createElement(_Timeline2.default, { events: this.state.events, editMode: this.state.editMode })
+        _react2.default.createElement(_Timeline2.default, {
+          events: this.state.events,
+          editMode: this.state.editMode,
+          editEvent: this.editEvent
+        })
       );
     }
   }]);

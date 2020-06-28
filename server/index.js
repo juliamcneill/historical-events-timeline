@@ -49,6 +49,15 @@ var readBySearchTermAndLimit = (searchTerm, limitStart, limitEnd, callback) => {
   );
 };
 
+var editEvent = (newEventInformation, callback) => {
+  connection.query(
+    `UPDATE events SET date='${newEventInformation.newDate}', description='${newEventInformation.newDescription}' WHERE id=${newEventInformation.id}`,
+    function (error, results) {
+      callback(error, results);
+    }
+  );
+};
+
 app.get("/events", (req, res) => {
   readBySearchTermAndLimit(
     req.query.searchTerm,
@@ -56,10 +65,22 @@ app.get("/events", (req, res) => {
     req.query.limitEnd,
     function (error, results) {
       if (error) {
-        res.status(404).json(error);
+        console.log(error);
+        res.sendStatus(500);
       } else {
         res.status(200).json(results);
       }
     }
   );
+});
+
+app.put("/events", (req, res) => {
+  editEvent(req.body, function (error, results) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
 });

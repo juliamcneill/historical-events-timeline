@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import axios from "axios";
 
 import EditForm from "./EditForm.jsx";
 
@@ -28,7 +29,7 @@ class Timeline extends React.Component {
           </div>
         </div>
         <div id="events-feed">
-          {this.props.events.map((item, index) => (
+          {this.props.events.map((item) => (
             <div className="item" onClick={() => this.selectEvent(item)}>
               <span className="item-date">{item.date}</span>
               <span className="item-description">{item.description}</span>
@@ -36,7 +37,10 @@ class Timeline extends React.Component {
           ))}
         </div>
         {this.props.editMode ? (
-          <EditForm selectedEvent={this.state.selectedEvent} />
+          <EditForm
+            selectedEvent={this.state.selectedEvent}
+            editEvent={this.props.editEvent}
+          />
         ) : null}
       </div>
     );

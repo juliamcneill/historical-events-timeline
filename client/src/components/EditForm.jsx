@@ -34,16 +34,17 @@ class EditForm extends React.Component {
 
   handleEditSubmit(event) {
     event.preventDefault();
-    this.setState({
-      newDate: "",
-      newDescription: "",
+    this.props.editEvent({
+      id: this.props.selectedEvent.id,
+      newDate: this.state.newDate,
+      newDescription: this.state.newDescription,
     });
   }
 
   render() {
     return (
       <div>
-        <div>Select an event: {this.props.selectedEvent.id}</div>
+        <div>Select an event:</div>
         <input
           type="text"
           name="newDate"
