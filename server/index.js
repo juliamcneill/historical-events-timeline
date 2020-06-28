@@ -32,14 +32,16 @@ connection.connect((error) => {
   }
 });
 
-var readAll = (callback) => {
-  connection.query("SELECT * FROM events", function (error, results) {
+var readBySearchTermAndLimit = (searchTerm, callback) => {
+  var sql =
+    `SELECT * FROM events WHERE description LIKE '%` + `${searchTerm}` + `%'`;
+  connection.query(sql, searchTerm, function (error, results) {
     callback(error, results);
   });
 };
 
 app.get("/events", (req, res) => {
-  readAll(function (error, results) {
+  readBySearchTermAndLimit(req.query.searchTerm, function (error, results) {
     if (error) {
       res.status(404).json(error);
     } else {
