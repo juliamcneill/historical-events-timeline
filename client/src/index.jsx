@@ -9,7 +9,6 @@ import Timeline from "./components/Timeline.jsx";
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       searchTerm: "",
       isLoading: false,
@@ -136,9 +135,16 @@ class App extends React.Component {
       <div>
         <h1>Historical Events Finder</h1>
         <Search getEvents={this.getEvents} />
-        <button type="submit" onClick={this.toggleEditMode}>
-          Toggle Edit Mode
-        </button>
+        {this.state.editMode === false ? (
+          <button type="submit" onClick={this.toggleEditMode}>
+            Edit Mode
+          </button>
+        ) : (
+          <button type="submit" onClick={this.toggleEditMode}>
+            Done Editing
+          </button>
+        )}
+
         <Timeline
           events={this.state.events}
           editMode={this.state.editMode}

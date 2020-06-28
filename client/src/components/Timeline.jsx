@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 
-import EditForm from "./EditForm.jsx";
+import Edit from "./Edit.jsx";
 
 class Timeline extends React.Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class Timeline extends React.Component {
           ))}
         </div>
         {this.props.editMode ? (
-          <EditForm
+          <Edit
             selectedEvent={this.state.selectedEvent}
             editEvent={this.props.editEvent}
           />

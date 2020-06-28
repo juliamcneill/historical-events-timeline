@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-class EditForm extends React.Component {
+class Edit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,7 +43,7 @@ class EditForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="editForm">
         <div>Select an event:</div>
         <input
           type="text"
@@ -65,4 +65,4 @@ class EditForm extends React.Component {
   }
 }
 
-export default EditForm;
+export default Edit;

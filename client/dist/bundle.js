@@ -10448,9 +10448,9 @@ var _axios = __webpack_require__(90);
 
 var _axios2 = _interopRequireDefault(_axios);
 
-var _EditForm = __webpack_require__(111);
+var _Edit = __webpack_require__(218);
 
-var _EditForm2 = _interopRequireDefault(_EditForm);
+var _Edit2 = _interopRequireDefault(_Edit);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10522,7 +10522,7 @@ var Timeline = function (_React$Component) {
             );
           })
         ),
-        this.props.editMode ? _react2.default.createElement(_EditForm2.default, {
+        this.props.editMode ? _react2.default.createElement(_Edit2.default, {
           selectedEvent: this.state.selectedEvent,
           editEvent: this.props.editEvent
         }) : null
@@ -11777,121 +11777,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 111 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(26);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(25);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var EditForm = function (_React$Component) {
-  _inherits(EditForm, _React$Component);
-
-  function EditForm(props) {
-    _classCallCheck(this, EditForm);
-
-    var _this = _possibleConstructorReturn(this, (EditForm.__proto__ || Object.getPrototypeOf(EditForm)).call(this, props));
-
-    _this.state = {
-      newDate: props.selectedEvent.date,
-      newDescription: props.selectedEvent.description
-    };
-
-    _this.handleEditChange = _this.handleEditChange.bind(_this);
-    _this.handleEditSubmit = _this.handleEditSubmit.bind(_this);
-    return _this;
-  }
-
-  _createClass(EditForm, [{
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps) {
-      if (prevProps.selectedEvent.date !== this.props.selectedEvent.date || prevProps.selectedEvent.description !== this.props.selectedEvent.description) {
-        this.setState({
-          newDate: this.props.selectedEvent.date,
-          newDescription: this.props.selectedEvent.description
-        });
-      }
-    }
-  }, {
-    key: "handleEditChange",
-    value: function handleEditChange(event) {
-      this.setState(_defineProperty({}, event.target.name, event.target.value));
-    }
-  }, {
-    key: "handleEditSubmit",
-    value: function handleEditSubmit(event) {
-      event.preventDefault();
-      this.props.editEvent({
-        id: this.props.selectedEvent.id,
-        newDate: this.state.newDate,
-        newDescription: this.state.newDescription
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(
-          "div",
-          null,
-          "Select an event:"
-        ),
-        _react2.default.createElement("input", {
-          type: "text",
-          name: "newDate",
-          value: this.state.newDate || "",
-          onChange: function onChange(event) {
-            return _this2.handleEditChange(event);
-          }
-        }),
-        _react2.default.createElement("input", {
-          type: "text",
-          name: "newDescription",
-          value: this.state.newDescription || "",
-          onChange: this.handleEditChange
-        }),
-        _react2.default.createElement(
-          "button",
-          { type: "submit", onClick: this.handleEditSubmit },
-          "Edit Event"
-        )
-      );
-    }
-  }]);
-
-  return EditForm;
-}(_react2.default.Component);
-
-exports.default = EditForm;
-
-/***/ }),
+/* 111 */,
 /* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12098,10 +11984,14 @@ var App = function (_React$Component) {
           "Historical Events Finder"
         ),
         _react2.default.createElement(_Search2.default, { getEvents: this.getEvents }),
-        _react2.default.createElement(
+        this.state.editMode === false ? _react2.default.createElement(
           "button",
           { type: "submit", onClick: this.toggleEditMode },
-          "Toggle Edit Mode"
+          "Edit Mode"
+        ) : _react2.default.createElement(
+          "button",
+          { type: "submit", onClick: this.toggleEditMode },
+          "Done Editing"
         ),
         _react2.default.createElement(_Timeline2.default, {
           events: this.state.events,
@@ -24997,6 +24887,121 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(26);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(25);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Edit = function (_React$Component) {
+  _inherits(Edit, _React$Component);
+
+  function Edit(props) {
+    _classCallCheck(this, Edit);
+
+    var _this = _possibleConstructorReturn(this, (Edit.__proto__ || Object.getPrototypeOf(Edit)).call(this, props));
+
+    _this.state = {
+      newDate: props.selectedEvent.date,
+      newDescription: props.selectedEvent.description
+    };
+
+    _this.handleEditChange = _this.handleEditChange.bind(_this);
+    _this.handleEditSubmit = _this.handleEditSubmit.bind(_this);
+    return _this;
+  }
+
+  _createClass(Edit, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (prevProps.selectedEvent.date !== this.props.selectedEvent.date || prevProps.selectedEvent.description !== this.props.selectedEvent.description) {
+        this.setState({
+          newDate: this.props.selectedEvent.date,
+          newDescription: this.props.selectedEvent.description
+        });
+      }
+    }
+  }, {
+    key: "handleEditChange",
+    value: function handleEditChange(event) {
+      this.setState(_defineProperty({}, event.target.name, event.target.value));
+    }
+  }, {
+    key: "handleEditSubmit",
+    value: function handleEditSubmit(event) {
+      event.preventDefault();
+      this.props.editEvent({
+        id: this.props.selectedEvent.id,
+        newDate: this.state.newDate,
+        newDescription: this.state.newDescription
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        "div",
+        { id: "editForm" },
+        _react2.default.createElement(
+          "div",
+          null,
+          "Select an event:"
+        ),
+        _react2.default.createElement("input", {
+          type: "text",
+          name: "newDate",
+          value: this.state.newDate || "",
+          onChange: function onChange(event) {
+            return _this2.handleEditChange(event);
+          }
+        }),
+        _react2.default.createElement("input", {
+          type: "text",
+          name: "newDescription",
+          value: this.state.newDescription || "",
+          onChange: this.handleEditChange
+        }),
+        _react2.default.createElement(
+          "button",
+          { type: "submit", onClick: this.handleEditSubmit },
+          "Edit Event"
+        )
+      );
+    }
+  }]);
+
+  return Edit;
+}(_react2.default.Component);
+
+exports.default = Edit;
 
 /***/ })
 /******/ ]);
