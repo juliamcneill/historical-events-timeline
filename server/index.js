@@ -77,6 +77,15 @@ var getTopics = (callback) => {
   );
 };
 
+var getPlaces = (callback) => {
+  connection.query(
+    `SELECT DISTINCT category2 FROM events WHERE category1 LIKE '%By place%' ORDER BY category2`,
+    function (error, results) {
+      callback(error, results);
+    }
+  );
+};
+
 app.get("/events", (req, res) => {
   readBySearchTermAndLimit(
     req.query.searchTerm,
@@ -107,6 +116,17 @@ app.put("/events", (req, res) => {
 
 app.get("/topics", (req, res) => {
   getTopics(function (error, results) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+
+app.get("/places", (req, res) => {
+  getPlaces(function (error, results) {
     if (error) {
       console.log(error);
       res.sendStatus(500);

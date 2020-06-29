@@ -199,3 +199,13 @@ button:hover {
 #Topics:hover {
   background-color: #80808066;
 }
+
+#Places {
+  color: white;
+  background-color: darkslategrey;
+  border-radius: 3px;
+}
+
+#Places:hover {
+  background-color: #80808066;
+}
