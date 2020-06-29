@@ -34,7 +34,8 @@ connection.connect((error) => {
 
 var readBySearchTermAndLimit = (
   searchTerm,
-  category,
+  placesTerm,
+  topicsTerm,
   eventsLoaded,
   eventsIncrement,
   callback
@@ -49,9 +50,13 @@ var readBySearchTermAndLimit = (
       `%' OR category2 LIKE '%` +
       `${searchTerm}` +
       `%') AND (category1 LIKE '%` +
-      `${category}` +
+      `${placesTerm}` +
       `%' OR category2 LIKE '%` +
-      `${category}` +
+      `${placesTerm}` +
+      `%') AND (category1 LIKE '%` +
+      `${topicsTerm}` +
+      `%' OR category2 LIKE '%` +
+      `${topicsTerm}` +
       `%') ORDER BY id LIMIT ${eventsLoaded}, ${eventsIncrement}`,
     function (error, results) {
       callback(error, results);
@@ -89,7 +94,8 @@ var getPlaces = (callback) => {
 app.get("/events", (req, res) => {
   readBySearchTermAndLimit(
     req.query.searchTerm,
-    req.query.category,
+    req.query.placesTerm,
+    req.query.topicsTerm,
     req.query.eventsLoaded,
     req.query.eventsIncrement,
     function (error, results) {

@@ -11949,7 +11949,8 @@ var App = function (_React$Component) {
 
     _this.state = {
       searchTerm: "",
-      category: "",
+      placesTerm: "",
+      topicsTerm: "",
       isLoading: false,
       events: [],
       eventsLoaded: 0,
@@ -11989,7 +11990,7 @@ var App = function (_React$Component) {
               eventsLoaded: prevState.eventsLoaded + _this.state.eventsIncrement
             };
           });
-          getEvents(_this.state.searchTerm, _this.state.category);
+          getEvents(_this.state.searchTerm, _this.state.placesTerm, _this.state.topicsTerm);
         }
       }, 100);
     };
@@ -12006,22 +12007,27 @@ var App = function (_React$Component) {
   _createClass(App, [{
     key: "componentWillMount",
     value: function componentWillMount() {
-      this.getEvents(this.state.searchTerm, this.state.category);
+      this.getEvents(this.state.searchTerm, this.state.placesTerm, this.state.topicsTerm);
     }
   }, {
     key: "getEvents",
-    value: function getEvents(searchTerm, category, eventEdited) {
+    value: function getEvents(searchTerm, placesTerm, topicsTerm, eventEdited) {
       var _this2 = this;
 
-      if (this.state.searchTerm != searchTerm || this.state.category != category || eventEdited === true) {
+      if (this.state.searchTerm != searchTerm || this.state.placesTerm != placesTerm || this.state.topicsTerm != topicsTerm || eventEdited === true) {
         this.setState({
           events: [],
           eventsLoaded: 0
         });
       }
 
-      this.setState({ searchTerm: searchTerm, category: category, isLoading: true }, function () {
-        _axios2.default.get("/events?searchTerm=" + _this2.state.searchTerm + "&category=" + _this2.state.category + "&eventsLoaded=" + _this2.state.eventsLoaded + "&eventsIncrement=" + _this2.state.eventsIncrement).then(function (_ref) {
+      this.setState({
+        searchTerm: searchTerm,
+        placesTerm: placesTerm,
+        topicsTerm: topicsTerm,
+        isLoading: true
+      }, function () {
+        _axios2.default.get("/events?searchTerm=" + _this2.state.searchTerm + "&placesTerm=" + _this2.state.placesTerm + "&topicsTerm=" + _this2.state.topicsTerm + "&eventsLoaded=" + _this2.state.eventsLoaded + "&eventsIncrement=" + _this2.state.eventsIncrement).then(function (_ref) {
           var data = _ref.data;
 
           _this2.setState({
@@ -12088,7 +12094,7 @@ var App = function (_React$Component) {
       var _this3 = this;
 
       _axios2.default.put("/events", newEventInformation).then(function () {
-        return _this3.getEvents(_this3.state.searchTerm, _this3.state.category, true);
+        return _this3.getEvents(_this3.state.searchTerm, _this3.state.placesTerm, _this3.state.topicsTerm, true);
       }).catch(function (error) {
         console.log(error);
       });
@@ -12096,17 +12102,21 @@ var App = function (_React$Component) {
   }, {
     key: "changeSearch",
     value: function changeSearch(searchTerm) {
-      this.getEvents(searchTerm, this.state.category);
+      this.getEvents(searchTerm, this.state.placesTerm, this.state.topicsTerm);
     }
   }, {
     key: "clearSearch",
     value: function clearSearch() {
-      this.getEvents("", this.state.category);
+      this.getEvents("", this.state.placesTerm, this.state.topicsTerm);
     }
   }, {
     key: "changeCategory",
-    value: function changeCategory(category) {
-      this.getEvents(this.state.searchTerm, category);
+    value: function changeCategory(category, type) {
+      if (type === "Places") {
+        this.getEvents(this.state.searchTerm, category, this.state.topicsTerm);
+      } else if (type === "Topics") {
+        this.getEvents(this.state.searchTerm, this.state.placesTerm, category);
+      }
     }
   }, {
     key: "render",
@@ -12123,7 +12133,8 @@ var App = function (_React$Component) {
           changeSearch: this.changeSearch,
           clearSearch: this.clearSearch
         }),
-        _react2.default.createElement(_Categories2.default, { changeCategory: this.changeCategory }),
+        _react2.default.createElement(_Categories2.default, { changeCategory: this.changeCategory, type: "Places" }),
+        _react2.default.createElement(_Categories2.default, { changeCategory: this.changeCategory, type: "Topics" }),
         _react2.default.createElement(_Timeline2.default, {
           events: this.state.events,
           editMode: this.state.editMode,
@@ -25071,7 +25082,7 @@ var Categories = function (_React$Component) {
 
     _this.state = {
       categories: [],
-      currentlySelected: "Topics"
+      currentlySelected: ""
     };
 
     _this.selectCategory = _this.selectCategory.bind(_this);
@@ -25082,16 +25093,19 @@ var Categories = function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.getCategoryList();
+      this.setState({
+        currentlySelected: this.props.type
+      });
     }
   }, {
     key: "getCategoryList",
     value: function getCategoryList() {
       var _this2 = this;
 
-      _axios2.default.get("/topics").then(function (_ref) {
+      _axios2.default.get("/" + this.props.type).then(function (_ref) {
         var data = _ref.data;
 
-        var categories = ["Topics"];
+        var categories = ["" + _this2.props.type];
         data.forEach(function (event) {
           if (event.category2 !== null) {
             categories.push(event.category2);
@@ -25110,10 +25124,10 @@ var Categories = function (_React$Component) {
       this.setState({
         currentlySelected: event.target.id
       });
-      if (event.target.id === "Topics") {
-        this.props.changeCategory("");
+      if (event.target.id === this.props.type) {
+        this.props.changeCategory("", this.props.type);
       } else {
-        this.props.changeCategory(event.target.id);
+        this.props.changeCategory(event.target.id, this.props.type);
       }
     }
   }, {

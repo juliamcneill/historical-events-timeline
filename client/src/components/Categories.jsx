@@ -7,7 +7,7 @@ class Categories extends React.Component {
     super(props);
     this.state = {
       categories: [],
-      currentlySelected: "Topics",
+      currentlySelected: "",
     };
 
     this.selectCategory = this.selectCategory.bind(this);
@@ -15,13 +15,16 @@ class Categories extends React.Component {
 
   componentDidMount() {
     this.getCategoryList();
+    this.setState({
+      currentlySelected: this.props.type,
+    });
   }
 
   getCategoryList() {
     axios
-      .get(`/topics`)
+      .get(`/${this.props.type}`)
       .then(({ data }) => {
-        var categories = ["Topics"];
+        var categories = [`${this.props.type}`];
         data.forEach(function (event) {
           if (event.category2 !== null) {
             categories.push(event.category2);
@@ -40,10 +43,10 @@ class Categories extends React.Component {
     this.setState({
       currentlySelected: event.target.id,
     });
-    if (event.target.id === "Topics") {
-      this.props.changeCategory("");
+    if (event.target.id === this.props.type) {
+      this.props.changeCategory("", this.props.type);
     } else {
-      this.props.changeCategory(event.target.id);
+      this.props.changeCategory(event.target.id, this.props.type);
     }
   }
 

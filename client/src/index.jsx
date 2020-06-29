@@ -12,7 +12,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchTerm: "",
-      category: "",
+      placesTerm: "",
+      topicsTerm: "",
       isLoading: false,
       events: [],
       eventsLoaded: 0,
@@ -57,7 +58,11 @@ class App extends React.Component {
               eventsLoaded: prevState.eventsLoaded + this.state.eventsIncrement,
             };
           });
-          getEvents(this.state.searchTerm, this.state.category);
+          getEvents(
+            this.state.searchTerm,
+            this.state.placesTerm,
+            this.state.topicsTerm
+          );
         }
       }, 100);
     };
@@ -71,13 +76,18 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    this.getEvents(this.state.searchTerm, this.state.category);
+    this.getEvents(
+      this.state.searchTerm,
+      this.state.placesTerm,
+      this.state.topicsTerm
+    );
   }
 
-  getEvents(searchTerm, category, eventEdited) {
+  getEvents(searchTerm, placesTerm, topicsTerm, eventEdited) {
     if (
       this.state.searchTerm != searchTerm ||
-      this.state.category != category ||
+      this.state.placesTerm != placesTerm ||
+      this.state.topicsTerm != topicsTerm ||
       eventEdited === true
     ) {
       this.setState({
@@ -87,11 +97,16 @@ class App extends React.Component {
     }
 
     this.setState(
-      { searchTerm: searchTerm, category: category, isLoading: true },
+      {
+        searchTerm: searchTerm,
+        placesTerm: placesTerm,
+        topicsTerm: topicsTerm,
+        isLoading: true,
+      },
       () => {
         axios
           .get(
-            `/events?searchTerm=${this.state.searchTerm}&category=${this.state.category}&eventsLoaded=${this.state.eventsLoaded}&eventsIncrement=${this.state.eventsIncrement}`
+            `/events?searchTerm=${this.state.searchTerm}&placesTerm=${this.state.placesTerm}&topicsTerm=${this.state.topicsTerm}&eventsLoaded=${this.state.eventsLoaded}&eventsIncrement=${this.state.eventsIncrement}`
           )
           .then(({ data }) => {
             this.setState({
@@ -135,7 +150,12 @@ class App extends React.Component {
     axios
       .put(`/events`, newEventInformation)
       .then(() =>
-        this.getEvents(this.state.searchTerm, this.state.category, true)
+        this.getEvents(
+          this.state.searchTerm,
+          this.state.placesTerm,
+          this.state.topicsTerm,
+          true
+        )
       )
       .catch((error) => {
         console.log(error);
@@ -143,15 +163,19 @@ class App extends React.Component {
   }
 
   changeSearch(searchTerm) {
-    this.getEvents(searchTerm, this.state.category);
+    this.getEvents(searchTerm, this.state.placesTerm, this.state.topicsTerm);
   }
 
   clearSearch() {
-    this.getEvents("", this.state.category);
+    this.getEvents("", this.state.placesTerm, this.state.topicsTerm);
   }
 
-  changeCategory(category) {
-    this.getEvents(this.state.searchTerm, category);
+  changeCategory(category, type) {
+    if (type === "Places") {
+      this.getEvents(this.state.searchTerm, category, this.state.topicsTerm);
+    } else if (type === "Topics") {
+      this.getEvents(this.state.searchTerm, this.state.placesTerm, category);
+    }
   }
 
   render() {
@@ -162,7 +186,8 @@ class App extends React.Component {
           changeSearch={this.changeSearch}
           clearSearch={this.clearSearch}
         />
-        <Categories changeCategory={this.changeCategory} />
+        <Categories changeCategory={this.changeCategory} type="Places" />
+        <Categories changeCategory={this.changeCategory} type="Topics" />
         <Timeline
           events={this.state.events}
           editMode={this.state.editMode}
