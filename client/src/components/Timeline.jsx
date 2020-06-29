@@ -18,6 +18,7 @@ class Timeline extends React.Component {
     this.setState({
       selectedEvent: item,
     });
+    this.props.getEvents(this.state.search);
   }
 
   render() {

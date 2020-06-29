@@ -4,6 +4,7 @@ import axios from "axios";
 import debounce from "lodash.debounce";
 
 import Search from "./components/Search.jsx";
+import Categories from "./components/Categories.jsx";
 import Timeline from "./components/Timeline.jsx";
 
 class App extends React.Component {
@@ -63,6 +64,7 @@ class App extends React.Component {
     this.getEvents = this.getEvents.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
     this.editEvent = this.editEvent.bind(this);
+    this.changeCategory = this.changeCategory.bind(this);
   }
 
   componentWillMount() {
@@ -128,11 +130,22 @@ class App extends React.Component {
       });
   }
 
+  changeCategory(category) {
+    console.log("searching for", category);
+    this.getEvents(this.state.searchTerm);
+  }
+
   render() {
     return (
       <div>
         <h1>Historical Events Finder</h1>
         <Search getEvents={this.getEvents} />
+        <Categories changeCategory={this.changeCategory} />
+        <Timeline
+          events={this.state.events}
+          editMode={this.state.editMode}
+          editEvent={this.editEvent}
+        />
         {this.state.editMode === false ? (
           <button type="submit" onClick={this.toggleEditMode}>
             Edit Mode
@@ -142,12 +155,6 @@ class App extends React.Component {
             Done Editing
           </button>
         )}
-
-        <Timeline
-          events={this.state.events}
-          editMode={this.state.editMode}
-          editEvent={this.editEvent}
-        />
       </div>
     );
   }
