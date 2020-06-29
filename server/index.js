@@ -66,7 +66,7 @@ var readBySearchTermAndLimit = (
 
 var editEvent = (newEventInformation, callback) => {
   connection.query(
-    `UPDATE events SET date='${newEventInformation.newDate}', description='${newEventInformation.newDescription}' WHERE id=${newEventInformation.id}`,
+    `UPDATE events SET date='${newEventInformation.newDate}', description='${newEventInformation.newDescription}', category1='${newEventInformation.newCategory1}', category2='${newEventInformation.newCategory2}' WHERE id=${newEventInformation.id}`,
     function (error, results) {
       callback(error, results);
     }

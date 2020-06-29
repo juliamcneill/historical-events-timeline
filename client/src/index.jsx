@@ -129,6 +129,9 @@ class App extends React.Component {
       if (event.date.indexOf("/") !== -1) {
         event.date = event.date.split("/")[0];
       }
+      if (event.date[0] === "-") {
+        event.date = event.date.substring(1) + " BC";
+      }
     }
     return data;
   }

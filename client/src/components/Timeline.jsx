@@ -18,7 +18,6 @@ class Timeline extends React.Component {
     this.setState({
       selectedEvent: item,
     });
-    this.props.getEvents(this.state.search);
   }
 
   render() {
@@ -34,6 +33,7 @@ class Timeline extends React.Component {
             <div className="item" onClick={() => this.selectEvent(item)}>
               <span className="item-date">{item.date}</span>
               <span className="item-description">{item.description}</span>
+              <span className="item-category">{item.category2}</span>
             </div>
           ))}
         </div>
