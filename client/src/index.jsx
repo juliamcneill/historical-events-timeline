@@ -13,8 +13,8 @@ class App extends React.Component {
       searchTerm: "",
       isLoading: false,
       events: [],
-      limitStart: 0,
-      limitEnd: 10,
+      eventsLoaded: 0,
+      eventsIncrement: 20,
       editMode: false,
     };
 
@@ -52,8 +52,7 @@ class App extends React.Component {
         ) {
           this.setState((prevState) => {
             return {
-              limitStart: prevState.limitStart + 10,
-              limitEnd: prevState.limitEnd + 10,
+              eventsLoaded: prevState.eventsLoaded + this.state.eventsIncrement,
             };
           });
           getEvents(this.state.searchTerm);
@@ -74,15 +73,14 @@ class App extends React.Component {
     if (this.state.searchTerm != term || eventEdited === true) {
       this.setState({
         events: [],
-        limitStart: 0,
-        limitEnd: 10,
+        eventsLoaded: 0,
       });
     }
 
     this.setState({ searchTerm: term, isLoading: true }, () => {
       axios
         .get(
-          `/events?searchTerm=${this.state.searchTerm}&limitStart=${this.state.limitStart}&limitEnd=${this.state.limitEnd}`
+          `/events?searchTerm=${this.state.searchTerm}&eventsLoaded=${this.state.eventsLoaded}&eventsIncrement=${this.state.eventsIncrement}`
         )
         .then(({ data }) => {
           this.setState({

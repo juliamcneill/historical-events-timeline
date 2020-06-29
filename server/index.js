@@ -32,7 +32,12 @@ connection.connect((error) => {
   }
 });
 
-var readBySearchTermAndLimit = (searchTerm, limitStart, limitEnd, callback) => {
+var readBySearchTermAndLimit = (
+  searchTerm,
+  eventsLoaded,
+  eventsIncrement,
+  callback
+) => {
   connection.query(
     `SELECT * FROM events WHERE date LIKE '%` +
       `${searchTerm}` +
@@ -42,7 +47,7 @@ var readBySearchTermAndLimit = (searchTerm, limitStart, limitEnd, callback) => {
       `${searchTerm}` +
       `%' OR category2 LIKE '%` +
       `${searchTerm}` +
-      `%' ORDER BY id LIMIT ${limitStart}, ${limitEnd}`,
+      `%' ORDER BY id LIMIT ${eventsLoaded}, ${eventsIncrement}`,
     function (error, results) {
       callback(error, results);
     }
@@ -61,8 +66,8 @@ var editEvent = (newEventInformation, callback) => {
 app.get("/events", (req, res) => {
   readBySearchTermAndLimit(
     req.query.searchTerm,
-    req.query.limitStart,
-    req.query.limitEnd,
+    req.query.eventsLoaded,
+    req.query.eventsIncrement,
     function (error, results) {
       if (error) {
         console.log(error);
