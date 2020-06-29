@@ -59,6 +59,10 @@ button:hover {
   cursor: pointer;
 }
 
+#timelineContainer {
+  min-height: 650px;
+}
+
 #progress-container {
   clear: both;
   padding-top: 20px;

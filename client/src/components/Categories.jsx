@@ -16,7 +16,11 @@ class Categories extends React.Component {
     this.setState({
       currentlySelected: event.target.id,
     });
-    this.props.changeCategory(event.target.id);
+    if (event.target.id === "Filter") {
+      this.props.changeCategory("");
+    } else {
+      this.props.changeCategory(event.target.id);
+    }
   }
 
   render() {

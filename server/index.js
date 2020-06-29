@@ -34,6 +34,7 @@ connection.connect((error) => {
 
 var readBySearchTermAndLimit = (
   searchTerm,
+  category,
   eventsLoaded,
   eventsIncrement,
   callback
@@ -66,6 +67,7 @@ var editEvent = (newEventInformation, callback) => {
 app.get("/events", (req, res) => {
   readBySearchTermAndLimit(
     req.query.searchTerm,
+    req.query.category,
     req.query.eventsLoaded,
     req.query.eventsIncrement,
     function (error, results) {
@@ -73,6 +75,7 @@ app.get("/events", (req, res) => {
         console.log(error);
         res.sendStatus(500);
       } else {
+        console.log(req.query.category);
         res.status(200).json(results);
       }
     }

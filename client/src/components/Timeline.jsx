@@ -23,7 +23,7 @@ class Timeline extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="timelineContainer">
         <div id="progress-container">
           <div id="progress-unfilled">
             <div id="progress-filled"></div>

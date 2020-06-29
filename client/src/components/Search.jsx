@@ -22,7 +22,7 @@ class Search extends React.Component {
 
   handleFormSubmit(event) {
     event.preventDefault();
-    this.props.getEvents(this.state.search);
+    this.props.changeSearch(this.state.search);
     this.setState({
       lastSearched: this.state.search,
     });
@@ -30,7 +30,7 @@ class Search extends React.Component {
 
   handleClearSearch(event) {
     event.preventDefault();
-    this.props.getEvents("");
+    this.props.clearSearch();
     this.setState({
       search: "",
       lastSearched: null,

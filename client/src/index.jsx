@@ -12,6 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchTerm: "",
+      category: "Filter",
       isLoading: false,
       events: [],
       eventsLoaded: 0,
@@ -64,39 +65,48 @@ class App extends React.Component {
     this.getEvents = this.getEvents.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
     this.editEvent = this.editEvent.bind(this);
+    this.changeSearch = this.changeSearch.bind(this);
+    this.clearSearch = this.clearSearch.bind(this);
     this.changeCategory = this.changeCategory.bind(this);
   }
 
   componentWillMount() {
-    this.getEvents(this.state.searchTerm);
+    this.getEvents(this.state.searchTerm, this.state.category);
   }
 
-  getEvents(term, eventEdited) {
-    if (this.state.searchTerm != term || eventEdited === true) {
+  getEvents(searchTerm, category, eventEdited) {
+    if (
+      this.state.searchTerm != searchTerm ||
+      this.state.category != category ||
+      eventEdited === true
+    ) {
       this.setState({
         events: [],
         eventsLoaded: 0,
       });
     }
 
-    this.setState({ searchTerm: term, isLoading: true }, () => {
-      axios
-        .get(
-          `/events?searchTerm=${this.state.searchTerm}&eventsLoaded=${this.state.eventsLoaded}&eventsIncrement=${this.state.eventsIncrement}`
-        )
-        .then(({ data }) => {
-          this.setState({
-            isLoading: false,
-            events: [...this.state.events, ...this.dateParser(data)],
+    this.setState(
+      { searchTerm: searchTerm, category: category, isLoading: true },
+      () => {
+        axios
+          .get(
+            `/events?searchTerm=${this.state.searchTerm}&category=${this.state.category}&eventsLoaded=${this.state.eventsLoaded}&eventsIncrement=${this.state.eventsIncrement}`
+          )
+          .then(({ data }) => {
+            this.setState({
+              isLoading: false,
+              events: [...this.state.events, ...this.dateParser(data)],
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            this.setState({
+              isLoading: false,
+            });
           });
-        })
-        .catch((error) => {
-          console.log(error);
-          this.setState({
-            isLoading: false,
-          });
-        });
-    });
+      }
+    );
   }
 
   dateParser(data) {
@@ -124,22 +134,35 @@ class App extends React.Component {
   editEvent(newEventInformation) {
     axios
       .put(`/events`, newEventInformation)
-      .then(() => this.getEvents(this.state.searchTerm, true))
+      .then(() =>
+        this.getEvents(this.state.searchTerm, this.state.category, true)
+      )
       .catch((error) => {
         console.log(error);
       });
   }
 
+  changeSearch(searchTerm) {
+    this.getEvents(searchTerm, this.state.category);
+  }
+
+  clearSearch() {
+    console.log("being cleared");
+    this.getEvents("", this.state.category);
+  }
+
   changeCategory(category) {
-    console.log("searching for", category);
-    this.getEvents(this.state.searchTerm);
+    this.getEvents(this.state.searchTerm, category);
   }
 
   render() {
     return (
       <div>
         <h1>Historical Events Finder</h1>
-        <Search getEvents={this.getEvents} />
+        <Search
+          changeSearch={this.changeSearch}
+          clearSearch={this.clearSearch}
+        />
         <Categories changeCategory={this.changeCategory} />
         <Timeline
           events={this.state.events}
@@ -152,7 +175,7 @@ class App extends React.Component {
           </button>
         ) : (
           <button type="submit" onClick={this.toggleEditMode}>
-            Done Editing
+            Back to View Mode
           </button>
         )}
       </div>
