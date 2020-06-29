@@ -11949,7 +11949,7 @@ var App = function (_React$Component) {
 
     _this.state = {
       searchTerm: "",
-      category: "Filter",
+      category: "",
       isLoading: false,
       events: [],
       eventsLoaded: 0,
@@ -11989,7 +11989,7 @@ var App = function (_React$Component) {
               eventsLoaded: prevState.eventsLoaded + _this.state.eventsIncrement
             };
           });
-          getEvents(_this.state.searchTerm);
+          getEvents(_this.state.searchTerm, _this.state.category);
         }
       }, 100);
     };
@@ -12101,7 +12101,6 @@ var App = function (_React$Component) {
   }, {
     key: "clearSearch",
     value: function clearSearch() {
-      console.log("being cleared");
       this.getEvents("", this.state.category);
     }
   }, {

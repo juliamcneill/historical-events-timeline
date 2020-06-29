@@ -40,7 +40,7 @@ var readBySearchTermAndLimit = (
   callback
 ) => {
   connection.query(
-    `SELECT * FROM events WHERE date LIKE '%` +
+    `SELECT * FROM events WHERE (date LIKE '%` +
       `${searchTerm}` +
       `%' OR description LIKE '%` +
       `${searchTerm}` +
@@ -48,7 +48,11 @@ var readBySearchTermAndLimit = (
       `${searchTerm}` +
       `%' OR category2 LIKE '%` +
       `${searchTerm}` +
-      `%' ORDER BY id LIMIT ${eventsLoaded}, ${eventsIncrement}`,
+      `%') AND (category1 LIKE '%` +
+      `${category}` +
+      `%' OR category2 LIKE '%` +
+      `${category}` +
+      `%') ORDER BY id LIMIT ${eventsLoaded}, ${eventsIncrement}`,
     function (error, results) {
       callback(error, results);
     }
@@ -58,6 +62,15 @@ var readBySearchTermAndLimit = (
 var editEvent = (newEventInformation, callback) => {
   connection.query(
     `UPDATE events SET date='${newEventInformation.newDate}', description='${newEventInformation.newDescription}' WHERE id=${newEventInformation.id}`,
+    function (error, results) {
+      callback(error, results);
+    }
+  );
+};
+
+var getTopics = (callback) => {
+  connection.query(
+    `SELECT DISTINCT category2 FROM events WHERE category1 LIKE '%By topic%' ORDER BY category2`,
     function (error, results) {
       callback(error, results);
     }
@@ -75,7 +88,6 @@ app.get("/events", (req, res) => {
         console.log(error);
         res.sendStatus(500);
       } else {
-        console.log(req.query.category);
         res.status(200).json(results);
       }
     }
@@ -89,6 +101,17 @@ app.put("/events", (req, res) => {
       res.sendStatus(500);
     } else {
       res.sendStatus(200);
+    }
+  });
+});
+
+app.get("/topics", (req, res) => {
+  getTopics(function (error, results) {
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+    } else {
+      res.status(200).json(results);
     }
   });
 });

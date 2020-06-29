@@ -12,7 +12,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       searchTerm: "",
-      category: "Filter",
+      category: "",
       isLoading: false,
       events: [],
       eventsLoaded: 0,
@@ -57,7 +57,7 @@ class App extends React.Component {
               eventsLoaded: prevState.eventsLoaded + this.state.eventsIncrement,
             };
           });
-          getEvents(this.state.searchTerm);
+          getEvents(this.state.searchTerm, this.state.category);
         }
       }, 100);
     };
@@ -147,7 +147,6 @@ class App extends React.Component {
   }
 
   clearSearch() {
-    console.log("being cleared");
     this.getEvents("", this.state.category);
   }
 
