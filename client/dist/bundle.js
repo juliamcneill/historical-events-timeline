@@ -25049,6 +25049,10 @@ var _reactDom = __webpack_require__(25);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _axios = __webpack_require__(53);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25066,8 +25070,8 @@ var Categories = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Categories.__proto__ || Object.getPrototypeOf(Categories)).call(this, props));
 
     _this.state = {
-      categories: ["Filter", "Art", "Literature", "Education"],
-      currentlySelected: "Filter"
+      categories: [],
+      currentlySelected: "Topics"
     };
 
     _this.selectCategory = _this.selectCategory.bind(_this);
@@ -25075,12 +25079,38 @@ var Categories = function (_React$Component) {
   }
 
   _createClass(Categories, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.getCategoryList();
+    }
+  }, {
+    key: "getCategoryList",
+    value: function getCategoryList() {
+      var _this2 = this;
+
+      _axios2.default.get("/topics").then(function (_ref) {
+        var data = _ref.data;
+
+        var categories = ["Topics"];
+        data.forEach(function (event) {
+          if (event.category2 !== null) {
+            categories.push(event.category2);
+          }
+        });
+        _this2.setState({
+          categories: categories
+        });
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
     key: "selectCategory",
     value: function selectCategory(event) {
       this.setState({
         currentlySelected: event.target.id
       });
-      if (event.target.id === "Filter") {
+      if (event.target.id === "Topics") {
         this.props.changeCategory("");
       } else {
         this.props.changeCategory(event.target.id);
@@ -25089,7 +25119,7 @@ var Categories = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _react2.default.createElement(
         "div",
@@ -25103,10 +25133,10 @@ var Categories = function (_React$Component) {
           "div",
           { className: "dropdown-content" },
           this.state.categories.map(function (item) {
-            return item != _this2.state.currentlySelected ? _react2.default.createElement(
+            return item != _this3.state.currentlySelected ? _react2.default.createElement(
               "a",
               { id: item, onClick: function onClick(event) {
-                  return _this2.selectCategory(event);
+                  return _this3.selectCategory(event);
                 } },
               item
             ) : null;

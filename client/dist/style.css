@@ -166,6 +166,8 @@ button:hover {
   width: 172px;
   border-radius: 3px;
   z-index: 1;
+  max-height: 500px;
+  overflow: scroll;
 }
 
 .dropdown-content a {
@@ -188,12 +190,12 @@ button:hover {
   display: block;
 }
 
-#Filter {
+#Topics {
   color: white;
   background-color: darkslategrey;
   border-radius: 3px;
 }
 
-#Filter:hover {
+#Topics:hover {
   background-color: #80808066;
 }
