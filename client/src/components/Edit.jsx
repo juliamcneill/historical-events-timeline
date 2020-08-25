@@ -58,24 +58,28 @@ class Edit extends React.Component {
           type="text"
           name="newDate"
           value={this.state.newDate || ""}
+          title="Edit event date"
           onChange={(event) => this.handleEditChange(event)}
         ></input>
         <input
           type="text"
           name="newDescription"
           value={this.state.newDescription || ""}
+          title="Edit event description"
           onChange={(event) => this.handleEditChange(event)}
         ></input>
         <input
           type="text"
           name="newCategory1"
           value={this.state.newCategory1 || ""}
+          title="Edit event category 1"
           onChange={(event) => this.handleEditChange(event)}
         ></input>
         <input
           type="text"
           name="newCategory2"
           value={this.state.newCategory2 || ""}
+          title="Edit event category 2"
           onChange={(event) => this.handleEditChange(event)}
         ></input>
         <button type="submit" onClick={(event) => this.handleEditSubmit(event)}>

@@ -22,7 +22,7 @@ class Timeline extends React.Component {
 
   render() {
     return (
-      <div id="timelineContainer">
+      <div id="timeline-container">
         <div id="progress-container">
           <div id="progress-unfilled">
             <div id="progress-filled"></div>
@@ -33,7 +33,9 @@ class Timeline extends React.Component {
             <div className="item" onClick={() => this.selectEvent(item)}>
               <span className="item-date">{item.date}</span>
               <span className="item-description">{item.description}</span>
-              <span className="item-category">{item.category2}</span>
+              {item.category2 !== null ? (
+                <span className="item-category">{item.category2}</span>
+              ) : null}
             </div>
           ))}
         </div>

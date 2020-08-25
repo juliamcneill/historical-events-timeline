@@ -44,6 +44,7 @@ class Search extends React.Component {
           type="text"
           placeholder="Search"
           name="search"
+          title="Search for event"
           value={this.state.search}
           onChange={(event) => this.handleFormChange(event)}
         ></input>
@@ -55,7 +56,7 @@ class Search extends React.Component {
             <span>
               <span>Showing results for: "{this.state.lastSearched}" </span>
               <span
-                id="clearSearch"
+                id="clear-search"
                 onClick={(event) => this.handleClearSearch(event)}
               >
                 x

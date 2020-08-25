@@ -53,13 +53,13 @@ button:hover {
   float: left;
 }
 
-#clearSearch {
+#clear-search {
   text-decoration: underline;
   margin-left: 10px;
   cursor: pointer;
 }
 
-#timelineContainer {
+#timeline-container {
   min-height: 630px;
 }
 
