@@ -4,13 +4,14 @@ const bodyParser = require("body-parser");
 const mysql = require("mysql");
 
 const app = express();
+const port = process.env.PORT || 30303;
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/../client/dist"));
 
 module.exports.app = app;
-app.set("port", 3030);
+app.set("port", port);
 
 if (!module.parent) {
   app.listen(app.get("port"));
@@ -42,22 +43,22 @@ var readBySearchTermAndLimit = (
 ) => {
   connection.query(
     `SELECT * FROM events WHERE (date LIKE '%` +
-      `${searchTerm}` +
-      `%' OR description LIKE '%` +
-      `${searchTerm}` +
-      `%' OR category1 LIKE '%` +
-      `${searchTerm}` +
-      `%' OR category2 LIKE '%` +
-      `${searchTerm}` +
-      `%') AND (category1 LIKE '%` +
-      `${placesTerm}` +
-      `%' OR category2 LIKE '%` +
-      `${placesTerm}` +
-      `%') AND (category1 LIKE '%` +
-      `${topicsTerm}` +
-      `%' OR category2 LIKE '%` +
-      `${topicsTerm}` +
-      `%') ORDER BY id LIMIT ${eventsLoaded}, ${eventsIncrement}`,
+    `${searchTerm}` +
+    `%' OR description LIKE '%` +
+    `${searchTerm}` +
+    `%' OR category1 LIKE '%` +
+    `${searchTerm}` +
+    `%' OR category2 LIKE '%` +
+    `${searchTerm}` +
+    `%') AND (category1 LIKE '%` +
+    `${placesTerm}` +
+    `%' OR category2 LIKE '%` +
+    `${placesTerm}` +
+    `%') AND (category1 LIKE '%` +
+    `${topicsTerm}` +
+    `%' OR category2 LIKE '%` +
+    `${topicsTerm}` +
+    `%') ORDER BY id LIMIT ${eventsLoaded}, ${eventsIncrement}`,
     function (error, results) {
       callback(error, results);
     }
