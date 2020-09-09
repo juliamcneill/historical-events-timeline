@@ -19,15 +19,7 @@ if (!module.parent) {
   console.log("Listening on", app.get("port"));
 }
 
-var connection = mysql.createConnection(connectionString);
-
-connection.connect((error) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log("Connected!");
-  }
-});
+var connection = mysql.createPool(connectionString);
 
 var readBySearchTermAndLimit = (
   searchTerm,
