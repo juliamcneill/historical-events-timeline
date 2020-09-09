@@ -5,6 +5,7 @@ const mysql = require("mysql");
 
 const app = express();
 const port = process.env.PORT || 3030;
+const connectionString = process.env.CLEARDB_DATABASE_URL;
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -18,12 +19,7 @@ if (!module.parent) {
   console.log("Listening on", app.get("port"));
 }
 
-var connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "historical_events_timeline",
-});
+var connection = mysql.createConnection(connectionString);
 
 connection.connect((error) => {
   if (error) {
