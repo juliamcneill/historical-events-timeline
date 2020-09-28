@@ -1,19 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import axios from "axios";
-import debounce from "lodash.debounce";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios';
+import debounce from 'lodash.debounce';
 
-import Search from "./components/Search.jsx";
-import Categories from "./components/Categories.jsx";
-import Timeline from "./components/Timeline.jsx";
+import Search from './components/Search.jsx';
+import Categories from './components/Categories.jsx';
+import Timeline from './components/Timeline.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: "",
-      placesTerm: "",
-      topicsTerm: "",
+      searchTerm: '',
+      placesTerm: '',
+      topicsTerm: '',
       isLoading: false,
       events: [],
       eventsLoaded: 0,
@@ -22,7 +22,7 @@ class App extends React.Component {
     };
 
     window.onload = () => {
-      var winScroll = document.querySelector("#events-feed");
+      var winScroll = document.querySelector('#events-feed');
 
       winScroll.onscroll = function () {
         updateProgressBar();
@@ -33,10 +33,10 @@ class App extends React.Component {
         var width = winScroll.scrollWidth - winScroll.clientWidth;
         var scrolled = (winScroll.scrollLeft / width) * 100;
         if (scrolled >= 100) {
-          return (document.getElementById("progress-filled").style.width =
-            "100%");
+          return (document.getElementById('progress-filled').style.width =
+            '100%');
         }
-        document.getElementById("progress-filled").style.width = scrolled + "%";
+        document.getElementById('progress-filled').style.width = scrolled + '%';
       }
 
       var loadMoreEvents = debounce(() => {
@@ -126,11 +126,11 @@ class App extends React.Component {
 
   dateParser(data) {
     for (var event of data) {
-      if (event.date.indexOf("/") !== -1) {
-        event.date = event.date.split("/")[0];
+      if (event.date.indexOf('/') !== -1) {
+        event.date = event.date.split('/')[0];
       }
-      if (event.date[0] === "-") {
-        event.date = event.date.substring(1) + " BC";
+      if (event.date[0] === '-') {
+        event.date = event.date.substring(1) + ' BC';
       }
     }
     return data;
@@ -170,13 +170,13 @@ class App extends React.Component {
   }
 
   clearSearch() {
-    this.getEvents("", this.state.placesTerm, this.state.topicsTerm);
+    this.getEvents('', this.state.placesTerm, this.state.topicsTerm);
   }
 
   changeCategory(category, type) {
-    if (type === "Places") {
+    if (type === 'Places') {
       this.getEvents(this.state.searchTerm, category, this.state.topicsTerm);
-    } else if (type === "Topics") {
+    } else if (type === 'Topics') {
       this.getEvents(this.state.searchTerm, this.state.placesTerm, category);
     }
   }
@@ -184,24 +184,28 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Historical Events Finder</h1>
-        <Search
-          changeSearch={this.changeSearch}
-          clearSearch={this.clearSearch}
-        />
-        <Categories changeCategory={this.changeCategory} type="Places" />
-        <Categories changeCategory={this.changeCategory} type="Topics" />
+        <div id='menu-container'>
+          <h1>Historical Events Finder</h1>
+          <Search
+            changeSearch={this.changeSearch}
+            clearSearch={this.clearSearch}
+          />
+          <div id='dropdowns-container'>
+            <Categories changeCategory={this.changeCategory} type='Places' />
+            <Categories changeCategory={this.changeCategory} type='Topics' />
+          </div>
+        </div>
         <Timeline
           events={this.state.events}
           editMode={this.state.editMode}
           editEvent={this.editEvent}
         />
         {this.state.editMode === false ? (
-          <button type="submit" onClick={this.toggleEditMode}>
+          <button type='submit' onClick={this.toggleEditMode}>
             Edit Mode
           </button>
         ) : (
-          <button type="submit" onClick={this.toggleEditMode}>
+          <button type='submit' onClick={this.toggleEditMode}>
             Back to View Mode
           </button>
         )}
@@ -210,4 +214,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));

@@ -1,6 +1,6 @@
 body {
   padding: 0px 60px;
-  font-family: "PT Serif", sans-serif;
+  font-family: 'PT Serif', sans-serif;
   margin: 0px;
   color: #2c3e50;
   background-color: #f4f7f8;
@@ -8,12 +8,14 @@ body {
 }
 
 h1 {
+  padding-top: 10px;
+  font-size: 1.5em;
   float: left;
 }
 
-input[type="text"] {
+input[type='text'] {
   font-size: 0.9em;
-  height: 30px;
+  height: 25px;
   border: 1px solid lightgrey;
   padding: 8px 8px;
   border-radius: 4px;
@@ -23,13 +25,13 @@ input[type="text"] {
 }
 
 button {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   letter-spacing: 1.1px;
   font-size: 14px;
   font-weight: 600;
   color: #ffffff;
   background-color: darkslategrey;
-  width: 170px;
+  width: 140px;
   float: left;
   padding: 10px;
   margin: 30px 10px;
@@ -41,6 +43,10 @@ button {
 
 button:hover {
   background-color: #80808066;
+}
+
+#menu-container {
+  width: 100%;
 }
 
 #searchDescription {
@@ -120,7 +126,7 @@ button:hover {
   bottom: 100%;
   left: 50%;
   border: solid transparent;
-  content: " ";
+  content: ' ';
   height: 0;
   width: 0;
   position: absolute;
@@ -173,6 +179,10 @@ button:hover {
   margin-left: 10px;
 }
 
+#dropdowns-container {
+  float: right;
+}
+
 .dropdown {
   position: relative;
   display: inline-block;
@@ -192,7 +202,7 @@ button:hover {
 }
 
 .dropdown-content a {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   letter-spacing: 1.1px;
   font-size: 14px;
   font-weight: 600;
@@ -229,4 +239,50 @@ button:hover {
 
 #Places:hover {
   background-color: #80808066;
+}
+
+@media screen and (max-width: 1510px) {
+  #dropdowns-container {
+    width: 100%;
+    margin: auto;
+  }
+
+  .dropdown {
+    width: 40%;
+    margin: 10px;
+    box-sizing: border-box;
+  }
+
+  .dropbtn {
+    width: 100%;
+  }
+
+  .dropdown-content {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 1111px) {
+  h1 {
+    width: 100%;
+    text-align: center;
+  }
+
+  input[type='text'] {
+    width: 100%;
+    margin: 0px;
+  }
+
+  button {
+    width: 100%;
+    margin: 0px;
+    margin-top: 30px;
+  }
+
+  #searchDescription {
+    width: 100%;
+    margin: 0px 0px;
+    margin-top: 30px;
+    text-align: center;
+  }
 }
